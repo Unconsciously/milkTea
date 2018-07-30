@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" background-color="#545c64"
-            text-color="#fff" active-text-color="#85ce61" unique-opened router>
+        <el-menu class="el-menu-vertical-demo" :default-active="$route.path"
+        background-color="#878d92" text-color="#fff" active-text-color="#85CE61" router>
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
@@ -30,13 +30,9 @@ export default {
       items: [
         {
           icon: "el-icon-menu",
-          index: "0",
+          index: "1",
           title: "系统管理",
           subs: [
-            // {
-            //   index: "/pay",
-            //   title: "支付设置"
-            // },
             {
               index: "/rules",
               title: "规格管理"
@@ -45,7 +41,7 @@ export default {
         },
         {
           icon: "el-icon-goods",
-          index: "1",
+          index: "2",
           title: "商品管理",
           subs: [
             {
@@ -60,7 +56,7 @@ export default {
         },
         {
           icon: "el-icon-edit-outline",
-          index: "2",
+          index: "3",
           title: "订单管理",
           subs: [
             {
@@ -72,11 +68,7 @@ export default {
       ]
     };
   },
-  computed: {
-    onRoutes() {
-      return this.$route.path.replace("/", "");
-    }
-  },
+  computed: {},
   created() {},
   methods: {}
 };
@@ -87,22 +79,24 @@ export default {
 
 .sidebar {
   display: block;
+  width: 200px;
   position: absolute;
   left: 0;
-  top: 70px;
+  top: 0;
   bottom: 0;
   overflow-y: hidden;
-  background-color: @base;
+  background-color: @left-color;
+  padding-top: 30px;
   &::-webkit-scrollbar {
     width: 0;
   }
-  .sidebar-el-menu {
-    width: 208px;
-    padding-top: 30px;
-  }
-
   ul {
-    height: 100%;
+    li {
+      i {
+        color: #fff !important;
+      }
+    }
   }
 }
+
 </style>

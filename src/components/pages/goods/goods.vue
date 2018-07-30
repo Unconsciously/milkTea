@@ -2,7 +2,7 @@
   <div class="goods-page">
       <v-title title="商品管理"></v-title>
       <div class="opt">
-        <el-button type="success" @click="addGoodsClick()">新建商品</el-button>
+        <el-button type="success" @click="addGoodsClick()" icon="el-icon-plus">新建商品</el-button>
       </div>
       <el-table
         :data="goodsData"
@@ -90,7 +90,7 @@ export default {
       goodsData: [],
       pages: {
         currentPage: 1,
-        totalPages: 5
+        totalPages: 1
       }
     };
   },

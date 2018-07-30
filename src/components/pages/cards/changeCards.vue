@@ -14,7 +14,7 @@
                 :before-upload="handleUpload"
                 :on-remove="handleRemove"
                 :on-exceed="handleExceed">
-                <el-button size="small" type="success">点击上传</el-button>
+                <el-button size="small" type="success" icon="el-icon-upload">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb，1-6张</div>
             </el-upload>
         </el-form-item>
@@ -25,7 +25,7 @@
           <el-input class="ipt" size="medium" v-model="cardsForm.sort" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="添加商品：" prop="goodsList">
-            <el-button type="success" size="small" @click="openGoodsBox()">相关商品</el-button>
+            <el-button type="success" size="small" @click="openGoodsBox()" icon="el-icon-sold-out">添加商品</el-button>
             <el-row type="flex" class="goods-list" v-if="multipleSelection.length>0">
               <el-col class="goods-box" :span="6" v-for="o in multipleSelection" :key="o.id">
                 <div class="gb-card">
@@ -68,18 +68,18 @@
           </el-radio-group>
         </el-form-item>
     
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('cardsForm')">保存</el-button>
-          <el-button @click="backCards()">返回</el-button>
+        <el-form-item class="wrap-opts">
+          <el-button type="success" @click="submitForm('cardsForm')" icon="el-icon-check">保存</el-button>
+          <el-button @click="backCards()" icon="el-icon-back">返回</el-button>
         </el-form-item>
       </el-form>
 
 
       <el-dialog class="goods-dialog" title="商品列表" :visible.sync="dialogTableVisible" width="70%">
-        <el-table ref="multipleTable" :data="goodsData" :row-key="getRowKeys" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="goodsData" :row-key="getRowKeys" @selection-change="selectionChange">
           <el-table-column
             type="selection"
-            width="55" :reserve-selection="true" v-model="multipleSelection">
+            width="55" :reserve-selection="true">
           </el-table-column>
           <el-table-column
             label="编号"
@@ -105,14 +105,14 @@
           <el-pagination
             @current-change="handleCurrentChange"
             :current-page.sync="pages.currentPage"
-            :page-size="5"
+            :page-size="10"
             layout="prev, pager, next, jumper"
             :page-count="pages.totalPages">
           </el-pagination>
         </div>
 
         <div class="close-box">
-          <el-button @click="closeGoodsBox()">确定</el-button>
+          <el-button type="success" @click="closeGoodsBox()">确定</el-button>
         </div>
       </el-dialog>
   </div>
@@ -154,7 +154,7 @@ export default {
       },
       pages: {
         currentPage: 1,
-        totalPages: 5
+        totalPages: 10
       },
       rules: {
         giftName: [
@@ -193,30 +193,29 @@ export default {
       },
       deep: true
     }
-    // goodsData: {
-    //   handler(curVal, oldVal) {
-    //     console.log(curVal);
-
-    //     if (curVal.length > 0) {
-    //       this.toggleSelection(this.multipleSelection);
-    //     }
-    //   },
-    //   deep: true
-    // }
   },
   methods: {
     indexMethod(index) {
       return index + 1;
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
       this.getGoodsList(val);
     },
-    handleSelectionChange(rows) {
-      this.multipleSelection = rows;
+    selectionChange(rs) {
+      var newArr = [];
+      for (var i = 0, len = rs.length; i < len; i++) {
+        for (var j = i + 1; j < len; j++) {
+          if (rs[i].id === rs[j].id) {
+            ++i;
+          }
+        }
+        newArr.push(rs[i]);
+      }
+
+      this.multipleSelection = newArr;
       this.selectIds = [];
-      if (rows) {
-        rows.forEach(row => {
+      if (newArr) {
+        newArr.forEach(row => {
           if (row) {
             this.selectIds.push(row.id);
           }
@@ -227,7 +226,7 @@ export default {
       this.axios
         .post(api.goodsList, {
           pageIndex: curPage,
-          pageSize: 5
+          pageSize: 10
         })
         .then(res => {
           if (res.status == 200 && res.data.status == 200) {
@@ -243,21 +242,6 @@ export default {
               if (it.fileList.length > 0) {
                 it.url = it.fileList[0].url;
               }
-              // console.log(this.multipleSelection);
-              // var flag = false;
-              // this.multipleSelection.forEach(row => {
-              //   if (it.id == row.id) {
-              //     flag = true;
-              //     return;
-              //   }
-              // });
-              // if (flag) {
-              //   console.log("1");
-              //   this.$refs.multipleTable.toggleRowSelection(it, true);
-              // } else {
-              //   console.log("2");
-              //   this.$refs.multipleTable.clearSelection();
-              // }
             });
             this.goodsData = res.data.result.result;
           } else if (res.data.code == "1000005") {
@@ -274,19 +258,17 @@ export default {
         .then(err => {
           console.log(err);
         });
-      this.toggleSelection(this.multipleSelection);
     },
     openGoodsBox() {
       this.dialogTableVisible = true;
       this.getGoodsList(1);
+      this.toggleSelection(this.multipleSelection);
     },
     closeGoodsBox() {
       this.dialogTableVisible = false;
-      console.log(this.multipleSelection);
     },
     doDelGoods(item) {
       var [...goodsArr] = this.multipleSelection;
-      console.log(goodsArr);
       this.multipleSelection.forEach((good, index) => {
         if (item.id == good.id) {
           goodsArr.splice(index, 1);
@@ -295,20 +277,15 @@ export default {
       this.multipleSelection = goodsArr;
     },
     toggleSelection(rows) {
-      this.goodsData.forEach(good => {
-        var flag = false;
+      if (rows.length > 0 && this.$refs.multipleTable) {
         rows.forEach(row => {
-          if (good.id == row.id) {
-            flag = true;
+          if (row) {
+            this.$refs.multipleTable.toggleRowSelection(row, true);
+          } else {
+            this.$refs.multipleTable.clearSelection();
           }
         });
-        if (flag) {
-          this.$refs.multipleTable.toggleRowSelection(good, true);
-        } else {
-          // this.$refs.multipleTable.clearSelection();
-          this.$refs.multipleTable.toggleRowSelection(good, false);
-        }
-      });
+      }
     },
 
     handleRemove(file, fileList) {
@@ -467,6 +444,9 @@ export default {
         .edit {
           height: 100%;
         }
+        .wrap-opts {
+          margin-top: 55px;
+        }
       }
       .goods-list {
         padding: 25px 200px 25px 0;
@@ -479,6 +459,7 @@ export default {
           .gb-card {
             overflow: hidden;
             border: 1px solid #f5f5f5;
+            box-shadow: 5px 1px 1px #cfcfcf;
             border-radius: 12px;
             padding-bottom: 15px;
             img {

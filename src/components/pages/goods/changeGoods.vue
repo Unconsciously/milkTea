@@ -5,18 +5,6 @@
           <el-input class="ipt" size="medium" v-model="goodsForm.goodsName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="商品主图：" prop="fileList">
-            <!-- <el-upload
-                class="ipt"
-                action='http://172.29.36.84:8888/upload'
-                list-type="picture"
-                :file-list="fileList"
-                :limit="1"
-                :before-upload="handleUpload"
-                :on-remove="handleRemove"
-                :on-exceed="handleExceed">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload> -->
              <el-upload
                   class="ipt"
                   action=""
@@ -26,7 +14,7 @@
                   :before-upload="handleUpload"
                   :on-remove="handleRemove"
                   :on-exceed="handleExceed">
-                  <el-button size="small" type="success">点击上传</el-button>
+                  <el-button size="small" type="success" icon="el-icon-upload">点击上传</el-button>
                   <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb，1-6张</div>
               </el-upload>
         </el-form-item>
@@ -89,9 +77,9 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('goodsForm')">保存</el-button>
-          <el-button @click="backGoods()">返回</el-button>
+        <el-form-item class="wrap-opts">
+          <el-button type="success" @click="submitForm('goodsForm')" icon="el-icon-check">保存</el-button>
+          <el-button @click="backGoods()" icon="el-icon-back">返回</el-button>
         </el-form-item>
       </el-form>
   </div>
@@ -586,6 +574,9 @@ export default {
 .change-goods {
   .from {
     .el-form-item {
+      .wrap-opts {
+        margin-top: 55px;
+      }
       margin-bottom: 35px;
       .ipt {
         width: 441px;

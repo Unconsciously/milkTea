@@ -2,7 +2,7 @@
   <div class="rules-page">
       <v-title title="礼品卡管理"></v-title>
       <div class="opt">
-        <el-button type="success" @click="addCardsClick()">新建礼品卡</el-button>
+        <el-button type="success" @click="addCardsClick()" icon="el-icon-plus">新建礼品卡</el-button>
       </div>
       <el-table
         :data="cardsData"
@@ -66,12 +66,11 @@
 
       <div class="pagination-wrap">
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page.sync="pages.currentPage"
+          :page-size="5"
           layout="prev, pager, next, jumper" 
-          :total="totalPages"
+          :total="pages.totalPages"
           >
         </el-pagination>
         
@@ -86,8 +85,10 @@ export default {
   data() {
     return {
       cardsData: [],
-      currentPage: 1,
-      totalPages: 1
+      pages: {
+        currentPage: 1,
+        totalPages: 1
+      }
     };
   },
   components: {
@@ -102,16 +103,17 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.gecardsList(val);
     },
-    gecardsList() {
+    gecardsList(curPage) {
       this.axios
         .post(api.giftCardList, {
-          pageIndex: 1,
-          pageSize: 10
+          pageIndex: curPage,
+          pageSize: 5
         })
         .then(res => {
           if (res.status == 200 && res.data.status == 200) {
-            this.totalPages = res.data.result.pageTotal;
+            this.pages.totalPages = res.data.result.pageTotal;
             res.data.result.result.map(it => {
               if (it.disabled) {
                 it.disabledStr = "禁用";
@@ -122,12 +124,6 @@ export default {
               if (it.fileList.length > 0) {
                 it.url = it.fileList[0].url;
               }
-
-              // if (it.attrLevel == 1) {
-              //   it.attrLevelStr = "一级";
-              // } else if (it.attrLevel == 2) {
-              //   it.attrLevelStr = "二级";
-              // }
               return it;
             });
             this.cardsData = res.data.result.result;
@@ -154,7 +150,7 @@ export default {
     }
   },
   created() {
-    this.gecardsList();
+    this.gecardsList(1);
   }
 };
 </script>

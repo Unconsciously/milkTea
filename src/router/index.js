@@ -8,7 +8,6 @@ const Login = resolve => require.ensure([], () => resolve(require('../components
 const Welcome = resolve => require.ensure([], () => resolve(require('../components/pages/Welcome.vue')), 'Welcome')
 const Shome = resolve => require.ensure([], () => resolve(require('../components/pages/Shome.vue')), 'Shome')
 const Sorder = resolve => require.ensure([], () => resolve(require('../components/pages/orders/Sorder.vue')), 'Sorder')
-const Sorder2 = resolve => require.ensure([], () => resolve(require('../components/pages/orders/Sorder2.vue')), 'Sorder2')
 
 const Cards = resolve => require.ensure([], () => resolve(require('../components/pages/cards/cards.vue')), 'Cards')
 const AddCards = resolve => require.ensure([], () => resolve(require('../components/pages/cards/addCards.vue')), 'AddCards')
@@ -22,8 +21,6 @@ const Rules = resolve => require.ensure([], () => resolve(require('../components
 const AddRules = resolve => require.ensure([], () => resolve(require('../components/pages/rules/addRules.vue')), 'AddRules')
 const EditRules = resolve => require.ensure([], () => resolve(require('../components/pages/rules/editRules.vue')), 'EditRules')
 const Fis = resolve => require.ensure([], () => resolve(require('../components/pages/404.vue')), 'Fis')
-
-const Pay = resolve => require.ensure([], () => resolve(require('../components/pages/pay.vue')), 'Pay')
 export default new Router({
   routes: [
     {
@@ -46,11 +43,6 @@ export default new Router({
           meta: { title: '系统管理' }
         },
         {
-          path: '/pay',
-          component: Pay,
-          meta: { title: '支付设置' }
-        },
-        {
           path: '/rules',
           component: Rules,
           meta: { title: '规格设置' },
@@ -70,11 +62,6 @@ export default new Router({
           path: '/sorder',
           component: Sorder,
           meta: { title: '订单' }
-        },
-        {
-          path: '/sorder2',
-          component: Sorder2,
-          meta: { title: '订单2' }
         },
         {
           path: '/cards',
@@ -121,5 +108,8 @@ export default new Router({
       path: '*',
       redirect: '/404'
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })

@@ -31,7 +31,7 @@ export default {
     }
   },
   created() {
-    this.searchUserInfo();
+    // this.searchUserInfo();
   }
 };
 </script>

@@ -1,15 +1,15 @@
 <template>
-    <div class="wrapper">
-        <v-head></v-head>
-        <v-sidebar></v-sidebar>
-        <div class="content-box">
-            <div class="content" v-loading="loading">
-                <transition name="move" mode="out-in">
-                    <router-view></router-view>
-                </transition>
-            </div>
-        </div>
-    </div>
+  <el-container class="wrapper">
+    <el-header class="header-wrap"><v-head></v-head></el-header>
+    <el-container class="content-box">
+      <el-aside width="200px"><v-sidebar></v-sidebar></el-aside>
+      <el-main class="main">
+        <transition name="move" mode="out-in">
+            <router-view></router-view>
+        </transition>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -18,7 +18,6 @@ import vSidebar from "./Sidebar.vue";
 export default {
   data() {
     return {
-      loading: false
     };
   },
   components: {
@@ -28,22 +27,21 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "../../assets/less/them.less";
 .wrapper {
+  .header-wrap {
+    padding: 0 !important;
+    height: 70px !important;
+    background-color: @base;
+  }
   .content-box {
     position: absolute;
     top: 70px;
-    left: 208px;
+    left: 0;
     right: 0;
     bottom: 0;
-    background-color: #545c64;
-    overflow-y: scroll;
-    .content {
-      background-color: #fff;
-      margin: 1% 1% 0;
-      border-radius: 12px 12px 0 0;
-      padding: 25px;
-      height: 93%;
-      overflow-y: scroll;
+    .main {
+      padding: 30px 50px;
     }
   }
 }

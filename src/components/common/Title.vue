@@ -1,6 +1,6 @@
 <template>
     <div class="title">
-        {{title}}
+        {{title}}<i class="el-icon-edit"></i>
     </div>
 </template>
 <script>

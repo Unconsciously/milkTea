@@ -2,7 +2,7 @@
   <div class="rules-page">
       <v-title title="规格管理"></v-title>
       <div class="opt">
-        <el-button type="success" @click="addRulesClick()">新建规格</el-button>
+        <el-button type="success" @click="addRulesClick()" icon="el-icon-plus">新建规格</el-button>
       </div>
       <el-table
         :data="tableData"

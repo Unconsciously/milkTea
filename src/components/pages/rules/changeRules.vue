@@ -15,15 +15,15 @@
           <el-input class="ipt" type="number" size="medium" v-model="ruleForm.sort" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="disabled">
-          <el-radio-group v-model="ruleForm.disabled">
+          <el-radio-group v-model="ruleForm.disabled" fill="#85CE61">
             <el-radio label="false">启用</el-radio>
             <el-radio label="true">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
       
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button @click="backRules()">返回</el-button>
+        <el-form-item class="wrap-opts">
+          <el-button type="success" @click="submitForm('ruleForm')" icon="el-icon-check">保存</el-button>
+          <el-button @click="backRules()" icon="el-icon-back">返回</el-button>
         </el-form-item>
       </el-form>
   </div>
@@ -151,6 +151,10 @@ export default {
   .from {
     .ipt {
       width: 441px;
+    }
+    .wrap-opts {
+      margin-top: 55px;
+
     }
   }
 }

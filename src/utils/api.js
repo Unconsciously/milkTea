@@ -10,6 +10,9 @@ export default {
     giftCard: '/giftCard',
     goodsList: '/goods/list',
     goods: '/goods',
+    orderList: '/order/list',
+    order: '/order',
+    take: '/order/take'
 
     
 }
